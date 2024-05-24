@@ -2,11 +2,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 
 
-# Transport + Engine + Controls
-# Car + CombustionEngine + SteeringWheel
-# Plane + JetEngine + Yoke
-
-
 class TransportFactory(ABC):
     @abstractmethod
     def create_engine(self) -> AbstractEngine:
