@@ -3,9 +3,9 @@ from abc import ABC, abstractmethod
 from typing import Any, Optional
 
 
-class Handler(ABC):
+class AbstractHandler(ABC):
     @abstractmethod
-    def set_next(self, handler: Handler) -> Handler:
+    def set_next(self, handler: AbstractHandler) -> AbstractHandler:
         pass
 
     @abstractmethod
@@ -13,10 +13,10 @@ class Handler(ABC):
         pass
 
 
-class AbstractHandler(Handler):
-    _next_handler: Handler = None
+class BaseHandler(AbstractHandler):
+    _next_handler: AbstractHandler = None
 
-    def set_next(self, handler: Handler) -> Handler:
+    def set_next(self, handler: AbstractHandler) -> AbstractHandler:
         self._next_handler = handler
 
         return handler
@@ -30,7 +30,7 @@ class AbstractHandler(Handler):
 
 
 # Concrete handlers
-class MonkeyHandler(AbstractHandler):
+class MonkeyHandler(BaseHandler):
     def handle(self, request) -> str | None:
         if request == "Banana":
             return f"Monkey: I'll eat the {request}"
@@ -38,7 +38,7 @@ class MonkeyHandler(AbstractHandler):
             return super().handle(request)
 
 
-class SquirrelHandler(AbstractHandler):
+class SquirrelHandler(BaseHandler):
     def handle(self, request) -> str | None:
         if request == "Nut":
             return f"Squirrel: I'll eat the {request}"
@@ -46,7 +46,7 @@ class SquirrelHandler(AbstractHandler):
             return super().handle(request)
 
 
-class DogHandler(AbstractHandler):
+class DogHandler(BaseHandler):
     def handle(self, request) -> str | None:
         if request == "MeatBall":
             return f"Dog: I'll eat the {request}"
@@ -54,7 +54,7 @@ class DogHandler(AbstractHandler):
             return super().handle(request)
         
 
-def client_code(handler: Handler) -> None:
+def client_code(handler: AbstractHandler) -> None:
     for food in ["Nut", "Banana", "Cup of coffe"]:
         print(f"\nClient: Who wants a {food}?")
         result = handler.handle(food)
